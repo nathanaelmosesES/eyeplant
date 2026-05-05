@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Camera, Upload, Send } from 'lucide-react';
 import Layout from '../components/Layout';
 import { getGeminiResponse } from '../lib/gemini';
+import CameraView from '../components/CameraView';
 
 interface Message {
   role: 'user' | 'ai';
@@ -18,6 +19,7 @@ const Chat: React.FC = () => {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -53,11 +55,21 @@ const Chat: React.FC = () => {
   };
 
   const triggerUpload = () => fileInputRef.current?.click();
+  const triggerCamera = () => setShowCamera(true);
 
   const title = id ? (id === '1' ? 'Disease A' : 'Disease B') : 'Chatroom';
 
   return (
     <Layout>
+      {showCamera && (
+        <CameraView 
+          onCapture={(img) => {
+            handleSend("", img);
+            setShowCamera(false);
+          }} 
+          onClose={() => setShowCamera(false)} 
+        />
+      )}
       <div style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '10px 0', borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
         <button onClick={() => navigate(-1)} className="icon-btn">
           <ArrowLeft size={24} />
@@ -99,7 +111,7 @@ const Chat: React.FC = () => {
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSend(input)}
         />
-        <button onClick={triggerUpload} className="icon-btn">
+        <button onClick={triggerCamera} className="icon-btn">
           <Camera size={20} />
         </button>
         <button onClick={triggerUpload} className="icon-btn">
