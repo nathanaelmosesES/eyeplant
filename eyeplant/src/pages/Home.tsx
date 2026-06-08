@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, MessageSquare, Info } from 'lucide-react';
 import Layout from '../components/Layout';
+import BottomNav from '../components/BottomNav';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -13,8 +14,11 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '20px', paddingBottom: '14px' }}>
+        <div
+          onClick={() => navigate('/profile')}
+          style={{ display: 'flex', alignItems: 'center', gap: '15px', cursor: 'pointer' }}
+        >
           <div style={{ background: 'white', padding: '10px', borderRadius: '50%' }}>
             <User size={32} color="#2C5F2D" />
           </div>
@@ -73,6 +77,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       </div>
+      <BottomNav />
     </Layout>
   );
 };
